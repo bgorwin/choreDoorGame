@@ -5,7 +5,7 @@ numClosedDoors = 3;
 
 const startButton = document.getElementById('start');
 
-const currentlyPlaying = true;
+// currentlyPlaying = true;
 
 
 let openDoor1;
@@ -17,7 +17,7 @@ const beachDoorPath = "https://s3.amazonaws.com/codecademy-content/projects/chor
 const spaceDoorPath = "https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/space.svg";
 const closedDoorPath = "https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/closed_door.svg";
 
-const isbot = (door) => {
+const isBot = (door) => {
   if(door.src === botDoorPath){
     return true;
   } else {
@@ -36,12 +36,10 @@ const isClicked = (door) => {
 const playDoor = (door) => {
   numClosedDoors --;
   if(numClosedDoors === 0){
+    gameOver('win');
+  } else if (isBot(door) === true) {
     gameOver();
-  } else if (isBot(door)){
-    gameOver();
-  } else {
-    playDoor();
-  }
+  } 
 }
 
 const randomChoreDoorGenerator = () => {
@@ -95,23 +93,23 @@ const startRound = () => {
 
 
 // This button resets the game when clicked. 
-startButton.onclick = () => {
-  startRound();
-  // if(!currentlyPlaying){
-  //   startRound();
-  // }
+startButton.onclick = (status) => {
+  if(currentlyPlaying === false){
+    startRound();
+  }
 }
 
 
 // This login is making it so that if the all 3 doors are closed, it ends. If the robot is chosen, then game over as well.
 const gameOver = (status) => {
   if(status === 'win'){
-     startButton.innerHTML = "You win! Play again?";
+    startButton.innerHTML = "You win! Play again?";
   } else {
     startButton.innerHTML = "Game over! Play Again?"
   }
   currentlyPlaying = false;
 }
 
-randomChoreDoorGenerator();
-gameOver();
+
+gameOver('win');
+startRound();
